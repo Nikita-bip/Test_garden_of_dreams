@@ -8,12 +8,13 @@ public class RemoveItemButton : MonoBehaviour
 
     private void Start()
     {
-        RemoveButton.onClick.AddListener(RemoveItem);
+        RemoveButton.onClick.RemoveAllListeners();
+        RemoveButton.onClick.AddListener(RemoveAllItems);
     }
 
-    public void RemoveItem()
+    public void RemoveAllItems()
     {
-        InventoryManager.Instance.RemoveItem(item);
+        InventoryManager.Instance.RemoveItem(item, item.count); // Удаляем все экземпляры предмета
     }
 
     public void AddItem(Item newItem)

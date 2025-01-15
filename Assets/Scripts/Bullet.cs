@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public float _offset = 90f;
     public float speed = 5f;
     public int damage = 20;
     private Rigidbody2D _rigidbody;
@@ -11,7 +12,14 @@ public class Bullet : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
 
         // Устанавливаем скорость пули
-        _rigidbody.velocity = new Vector2(Mathf.Cos(transform.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.eulerAngles.z * Mathf.Deg2Rad)) * speed;
+        _rigidbody.velocity = transform.right * speed;
+    }
+
+    private void Update()
+    {
+        // Поворачиваем пулю в сторону её полёта
+        float angle = Mathf.Atan2(_rigidbody.velocity.y, _rigidbody.velocity.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, angle + _offset);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
