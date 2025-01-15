@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab; 
-    public int numberOfEnemies = 3; 
-    public Vector2 spawnAreaMin; 
-    public Vector2 spawnAreaMax; 
+    [SerializeField] private GameObject _enemyPrefab; 
+    [SerializeField] private Vector2 _spawnAreaMin;
+    [SerializeField] private Vector2 _spawnAreaMax;
+
+    private int numberOfEnemies = 3;
 
     private void Start()
     {
-        // Спавним заданное количество врагов при старте игры
         for (int i = 0; i < numberOfEnemies; i++)
         {
             SpawnEnemy();
@@ -18,12 +18,10 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        // Генерируем случайные координаты в пределах заданного диапазона
-        float spawnX = Random.Range(spawnAreaMin.x, spawnAreaMax.x);
-        float spawnY = Random.Range(spawnAreaMin.y, spawnAreaMax.y);
+        float spawnX = Random.Range(_spawnAreaMin.x, _spawnAreaMax.x);
+        float spawnY = Random.Range(_spawnAreaMin.y, _spawnAreaMax.y);
         Vector2 spawnPosition = new Vector2(spawnX, spawnY);
 
-        // Создаём врага в случайной позиции
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
     }
 }

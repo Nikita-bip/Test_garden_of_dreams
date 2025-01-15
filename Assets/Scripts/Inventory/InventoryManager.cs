@@ -6,20 +6,18 @@ using System.IO;
 
 public class InventoryManager : MonoBehaviour
 {
+    [SerializeField] private Transform _itemContent;
+    [SerializeField] private GameObject _inventoryItem;
+
     public static InventoryManager Instance;
     public List<Item> Items = new List<Item>();
 
-    public Transform ItemContent;
-    public GameObject InventoryItem;
-
-    public RemoveItemButton[] InventoryItems;
-
-    private string savePath;
+    private string _savePath;
 
     private void Awake()
     {
         Instance = this;
-        savePath = Application.persistentDataPath + "/inventory.json";
+        _savePath = Application.persistentDataPath + "/inventory.json";
     }
 
     private void Start()
@@ -34,7 +32,7 @@ public class InventoryManager : MonoBehaviour
 
         if (existingItem != null)
         {
-            existingItem.count += item.count; // Вручает только один элемент вместо всего количества
+            existingItem.count += item.count;
         } 
         else 
         { 
@@ -71,7 +69,7 @@ public class InventoryManager : MonoBehaviour
 
         foreach (var item in Items)
         {
-            GameObject obj = Instantiate(InventoryItem, ItemContent);
+            GameObject obj = Instantiate(_inventoryItem, _itemContent);
             var itemIcon = obj.transform.Find("ItemIcon").GetComponent<Image>();
             var itemCountText = obj.transform.Find("ItemCountText").GetComponent<TextMeshProUGUI>();
             var removeButton = obj.GetComponent<RemoveItemButton>();
@@ -92,15 +90,15 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void CleanInventory()
+    private void CleanInventory()
     {
-        foreach (Transform item in ItemContent)
+        foreach (Transform item in _itemContent)
         {
             Destroy(item.gameObject);
         }
     }
 
-    public void SaveInventory()
+    private void SaveInventory()
     {
         InventoryData data = new InventoryData();
 
@@ -110,30 +108,26 @@ public class InventoryManager : MonoBehaviour
         }
 
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(savePath, json);
-        Debug.Log("Инвентарь сохранен.");
+        File.WriteAllText(_savePath, json);
     }
 
-    public void LoadInventory()
+    private void LoadInventory()
     {
-        if (File.Exists(savePath))
+        if (File.Exists(_savePath))
         {
-            string json = File.ReadAllText(savePath);
+            string json = File.ReadAllText(_savePath);
             InventoryData data = JsonUtility.FromJson<InventoryData>(json);
 
             Items.Clear();
 
             foreach (ItemData itemData in data.items)
             {
-                // Восстанавливаем предмет по идентификатору
                 Item item = ScriptableObject.CreateInstance<Item>();
                 item.id = itemData.id;
                 item.count = itemData.count;
                 item.icon = itemData.icon;
                 Items.Add(item);
             }
-
-            Debug.Log("Инвентарь загружен.");
         }
         else
         {
@@ -141,4 +135,3 @@ public class InventoryManager : MonoBehaviour
         }
     }
 }
-

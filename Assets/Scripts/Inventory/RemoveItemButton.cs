@@ -3,22 +3,23 @@ using UnityEngine.UI;
 
 public class RemoveItemButton : MonoBehaviour
 {
-    private Item item;
-    public Button RemoveButton;
+    [SerializeField] private Button _removeButton;
+
+    private Item _item;
 
     private void Start()
     {
-        RemoveButton.onClick.RemoveAllListeners();
-        RemoveButton.onClick.AddListener(RemoveAllItems);
+        _removeButton.onClick.RemoveAllListeners();
+        _removeButton.onClick.AddListener(RemoveAllItems);
     }
 
     public void RemoveAllItems()
     {
-        InventoryManager.Instance.RemoveItem(item, item.count); // Удаляем все экземпляры предмета
+        InventoryManager.Instance.RemoveItem(_item, _item.count);
     }
 
     public void AddItem(Item newItem)
     {
-        item = newItem;
+        _item = newItem;
     }
 }
