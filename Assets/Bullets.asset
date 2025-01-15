@@ -15,4 +15,4 @@ MonoBehaviour:
   id: 1
   itemName: Bullet
   icon: {fileID: 21300000, guid: d45f0cae013abb84688afe6e4bc52845, type: 3}
-  count: 1
+  count: 3

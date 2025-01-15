@@ -105,10 +105,13 @@ public class InventoryManager : MonoBehaviour
 
     private string savePath;
 
+
+
     private void Awake()
     {
         Instance = this;
         savePath = Application.persistentDataPath + "/inventory.json";
+        Debug.Log("Путь к файлу сохранения: " + savePath);
     }
 
     private void Start()
